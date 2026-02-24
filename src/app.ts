@@ -10,10 +10,6 @@ app.use(express.json());
 app.use("/api/v1", productRoutes);
 
 // Define a route
-app.get("/", (req, res) => {
-    res.send("Hello, World!");
-});
-
 app.get("/api/v1/health", (req, res) => {
     res.json({
         status: "OK",
