@@ -20,8 +20,17 @@ export const getProductByIdService = (): string[] => {
 };
 
 export const createProduct = async (productData: Omit<Product, "id" | "createdAt" | "updatedAt">): Promise<Product> => {
-  const newProduct = await firestoreRepository.createDocument<Product>(COLLECTION, productData);
-  return newProduct;
+    const now = new Date();
+
+    const productToCreate = {
+        ...productData,
+        createdAt: now,
+        updatedAt: now,
+    };
+
+    const newProduct = await firestoreRepository.createDocument<Product>(COLLECTION, productToCreate);
+
+    return newProduct;
 };
 
 export const updateProductService = (id: number, item: string): string => {

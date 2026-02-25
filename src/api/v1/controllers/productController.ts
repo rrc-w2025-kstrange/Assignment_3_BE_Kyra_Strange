@@ -19,12 +19,16 @@ export const getProductById = (req: Request, res: Response) => {
 };
 
 export const createProductController = async (req: Request, res: Response): Promise<void> => {
-  const product = await createProduct(req.body);
+  const newProduct = await createProduct(req.body);
   
-  res.status(201).json({
+  res.status(HTTP_STATUS.CREATED).json({
     message: "Product created",
-    data: product,
-  });
+    data: {
+    ...newProduct,
+    createdAt: (newProduct.createdAt as any).toDate().toISOString(),
+    updatedAt: (newProduct.updatedAt as any).toDate().toISOString(),
+  },
+});
 };
 
 export const updateProduct = (req: Request, res: Response) => {
