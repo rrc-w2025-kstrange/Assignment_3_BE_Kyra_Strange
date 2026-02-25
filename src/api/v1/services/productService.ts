@@ -1,7 +1,8 @@
 import { Product } from "../models/productModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
-import { postModelSchema } from "../validations/postValidation";
-import { validate } from "../middleware/validate";
+import { validateRequest } from "../middleware/validateRequest";
+
+const COLLECTION = "products";
 
 export const getHealthCheckService = (): string[] => {
     // Logic to process all items from the database
@@ -18,9 +19,9 @@ export const getProductByIdService = (): string[] => {
     return ["Item 1", "Item 2"];
 };
 
-export const createProductService = (item: string): string => {
-    // Logic to add a new item to the database
-    return "Item added";
+export const createProduct = async (productData: Omit<Product, "id" | "createdAt" | "updatedAt">): Promise<Product> => {
+  const newProduct = await firestoreRepository.createDocument<Product>(COLLECTION, productData);
+  return newProduct;
 };
 
 export const updateProductService = (id: number, item: string): string => {
