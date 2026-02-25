@@ -18,17 +18,13 @@ export const getProductById = (req: Request, res: Response) => {
     res.status(200).json(result);
 };
 
-export const createProductController = async (req: Request, res: Response) => {
-  try {
-    const product = await createProduct(req.body);
-    return res.status(HTTP_STATUS.CREATED).json({  
-      message: "Product created",
-      data: product,
-    });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message }); 
-  }
+export const createProductController = async (req: Request, res: Response): Promise<void> => {
+  const product = await createProduct(req.body);
+  
+  res.status(201).json({
+    message: "Product created",
+    data: product,
+  });
 };
 
 export const updateProduct = (req: Request, res: Response) => {

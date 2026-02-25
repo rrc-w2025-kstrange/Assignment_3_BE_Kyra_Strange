@@ -3,13 +3,14 @@ import { ObjectSchema } from "joi";
 import { HTTP_STATUS  } from "../../../constants/httpConstants";
 
 export const validateRequest = (schema: ObjectSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const { error } = schema.validate(req.body, { abortEarly: false });
 
     if (error) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: `Validation error: ${error.details.map(d => d.message).join(", ")}`,
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: `Validation error: ${error.message}`,
       });
+      return; 
     }
 
     next();
