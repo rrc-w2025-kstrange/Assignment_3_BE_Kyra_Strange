@@ -8,7 +8,7 @@ export const validateRequest = (schema: ObjectSchema) => {
 
     if (error) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: `Validation error: ${error.message}`,
+        message: `Validation error: ${error.details.map(d => d.message).join(", ")}`,
       });
     }
 
