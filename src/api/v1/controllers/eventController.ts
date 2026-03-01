@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getHealthCheckService, getAllProductsService, getProductByIdService, createProduct, updateProductService, deleteProductService } from "../services/productService";
+import { getHealthCheckService, getAllProductsService, getProductByIdService, createNewEvent, updateProductService, deleteProductService } from "../services/eventService";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 
 
@@ -18,17 +18,10 @@ export const getProductById = (req: Request, res: Response) => {
     res.status(200).json(result);
 };
 
-export const createProductController = async (req: Request, res: Response): Promise<void> => {
-  const newProduct = await createProduct(req.body);
-  
-  res.status(HTTP_STATUS.CREATED).json({
-    message: "Product created",
-    data: {
-    ...newProduct,
-    createdAt: (newProduct.createdAt as any).toDate().toISOString(),
-    updatedAt: (newProduct.updatedAt as any).toDate().toISOString(),
-  },
-});
+export const createEvent = (req: Request, res: Response): void => {
+  let result = createNewEvent("new event")
+
+  res.status(HTTP_STATUS.CREATED).send(result)
 };
 
 export const updateProduct = (req: Request, res: Response) => {

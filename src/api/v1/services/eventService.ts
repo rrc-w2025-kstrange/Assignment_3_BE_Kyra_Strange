@@ -1,8 +1,6 @@
 import { Event } from "../models/eventModel";
-import * as firestoreRepository from "../repositories/firestoreRepository";
+import { addEvent } from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
-
-const COLLECTION = "products";
 
 export const getHealthCheckService = (): string[] => {
     // Logic to process all items from the database
@@ -19,18 +17,9 @@ export const getProductByIdService = (): string[] => {
     return ["Item 1", "Item 2"];
 };
 
-export const createProduct = async (productData: Omit<Product, "id" | "createdAt" | "updatedAt">): Promise<Product> => {
-    const now = new Date();
-
-    const productToCreate = {
-        ...productData,
-        createdAt: now,
-        updatedAt: now,
-    };
-
-    const newProduct = await firestoreRepository.createDocument<Product>(COLLECTION, productToCreate);
-
-    return newProduct;
+export const createNewEvent = (event: string): string => {
+    addEvent();
+    return "Event added";
 };
 
 export const updateProductService = (id: number, item: string): string => {
