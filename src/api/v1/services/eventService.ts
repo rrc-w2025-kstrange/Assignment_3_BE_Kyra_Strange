@@ -1,5 +1,5 @@
 import { Event } from "../models/eventModel";
-import { addEvent, getDocumentById, getCollection } from "../repositories/firestoreRepository";
+import { addEvent, getDocumentById, getCollection, updateDocument } from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
 import { EventCreateRequest } from "../models/eventCreateRequestModel";
 import { EventDTO } from "../models/eventDTO";
@@ -29,9 +29,10 @@ export const createNewEvent = async (event: EventCreateRequest): Promise<Event> 
     return await addEvent(event);  
 };
 
-export const updateProductService = (id: number, item: string): string => {
+export const updateEventById = async (id: string, event: EventCreateRequest): Promise<void> => {
     // Logic to update an item in the database
-    return "Item updated";
+    await updateDocument(id, event);
+    return;
 };
 
 export const deleteProductService = (id: number): string => {

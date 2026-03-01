@@ -82,3 +82,18 @@ export const getCollection = async (): Promise<Array<EventDTO> | undefined> => {
 
     return events;
 };
+
+export const updateDocument = async (id: string, event: EventCreateRequest): Promise<void> => {
+    // Create a reference to a specific document in the 'users' collection
+    const docRef: DocumentReference = db.collection("Events").doc(id);
+
+    // Use the `update()` method to modify specific fields in the document
+    // This will only change the specified fields, leaving others untouched
+    await docRef.update({
+        name: event.name,
+        date: event.date, 
+        capacity: event.capacity,
+        updatedAt: new Date(),
+    });
+    return;
+};
