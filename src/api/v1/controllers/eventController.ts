@@ -6,9 +6,9 @@ import { EventCreateRequest } from "../models/eventCreateRequestModel";
 import { EventDTO } from "../models/eventDTO";
 
 
-export const getAllEvents = (req: Request, res: Response) => {
+export const getAllEvents = async (req: Request, res: Response) => {
     try {
-        const events = getAllEventsService();
+        const events = await getAllEventsService();
 
         res.status(HTTP_STATUS.OK).json(successResponse(events, "Events Retrieved"));
     } catch (error) {
