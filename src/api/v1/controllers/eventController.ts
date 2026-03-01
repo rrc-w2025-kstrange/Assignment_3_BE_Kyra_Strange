@@ -8,7 +8,7 @@ export const getAllEvents = (req: Request, res: Response) => {
     try {
         const events: string[] = getAllEventsService();
 
-        res.status(HTTP_STATUS.OK).json(successResponse(events));
+        res.status(HTTP_STATUS.OK).json(successResponse(events, "Events Retrieved"));
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"});
     }
