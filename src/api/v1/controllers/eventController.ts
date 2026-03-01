@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
-import { getHealthCheckService, getAllProductsService, getProductByIdService, createNewEvent, updateProductService, deleteProductService } from "../services/eventService";
+import { getAllEventsService, getProductByIdService, createNewEvent, updateProductService, deleteProductService } from "../services/eventService";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { successResponse } from "../models/responseModel";
 
 
-export const getHealthCheck = (req: Request, res: Response) => {
-    let result = getHealthCheckService()
-    res.status(200).json(result);
-};
+export const getAllEvents = (req: Request, res: Response) => {
+    try {
+        const events: string[] = getAllEventsService();
 
-export const getAllProducts = (req: Request, res: Response) => {
-    let result = getAllProductsService()
-    res.status(200).json(result);
-};
+        res.status(HTTP_STATUS.OK).json(successResponse(events));
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"});
+    }
+}
 
 export const getProductById = (req: Request, res: Response) => {
     let result = getProductByIdService()

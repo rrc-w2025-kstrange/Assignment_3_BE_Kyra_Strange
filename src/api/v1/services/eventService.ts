@@ -2,12 +2,7 @@ import { Event } from "../models/eventModel";
 import { addEvent } from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
 
-export const getHealthCheckService = (): string[] => {
-    // Logic to process all items from the database
-    return ["Item 1", "Item 2"];
-};
-
-export const getAllProductsService = (): string[] => {
+export const getAllEventsService = (): string[] => {
     // Logic to process all items from the database
     return ["Item 1", "Item 2"];
 };

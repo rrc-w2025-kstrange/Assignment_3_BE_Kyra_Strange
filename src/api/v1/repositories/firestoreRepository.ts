@@ -15,3 +15,20 @@ export const addEvent = async (): Promise<void> => {
         });
     console.log("Event added");
 };
+
+
+const getEvent = async (): Promise<void> => {
+    // Create a reference to a specific document in the 'users' collection
+    const docRef: DocumentReference = db.collection("users").doc("user1");
+
+    // Use the `get()` method to retrieve the document
+    const doc = await docRef.get();
+
+    // Check if the document exists
+    if (doc.exists) {
+        // `doc.data()` returns an object with all fields in the document
+        console.log("Document data:", doc.data());
+    } else {
+        console.log("No such document!");
+    }
+};
