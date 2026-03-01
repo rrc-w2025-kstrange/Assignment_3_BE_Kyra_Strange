@@ -1,17 +1,17 @@
 import { Event } from "../models/eventModel";
-import { addEvent, getDocumentById, getCollection, updateDocument } from "../repositories/firestoreRepository";
+import { addEvent, getEventById, getAllEvents, updateEvent, deleteEvent } from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
 import { EventCreateRequest } from "../models/eventCreateRequestModel";
 import { EventDTO } from "../models/eventDTO";
 
 export const getAllEventsService = async (): Promise<Array<EventDTO> | undefined> => {
     // Logic to process all items from the database
-    return await getCollection();
+    return await getAllEvents();
 };
 
 export const getEventByIdService = async (id: string): Promise<Event> => {
     // Logic to process all items from the database
-    let entity = await getDocumentById(id)
+    let entity = await getEventById(id)
     return {
         id: entity?.id,
         name: entity?.name,
@@ -31,7 +31,7 @@ export const createNewEvent = async (event: EventCreateRequest): Promise<Event> 
 
 export const updateEventById = async (id: string, event: EventCreateRequest): Promise<void> => {
     // Logic to update an item in the database
-    await updateDocument(id, event);
+    await updateEvent(id, event);
     return;
 };
 

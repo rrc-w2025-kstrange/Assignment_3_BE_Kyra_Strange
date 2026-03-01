@@ -28,7 +28,7 @@ export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
 };
 
 
-export const getDocumentById = async (id: string): Promise<Event | undefined> => {
+export const getEventById = async (id: string): Promise<Event | undefined> => {
     // Create a reference to a specific document in the 'users' collection
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
@@ -56,7 +56,7 @@ export const getDocumentById = async (id: string): Promise<Event | undefined> =>
     }
 };
 
-export const getCollection = async (): Promise<Array<EventDTO> | undefined> => {
+export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
     // Retrieve all documents from the 'users' collection
     // `get()` returns a QuerySnapshot containing all documents in the collection
     const snapshot: QuerySnapshot = await db.collection("Events").get();
@@ -83,7 +83,7 @@ export const getCollection = async (): Promise<Array<EventDTO> | undefined> => {
     return events;
 };
 
-export const updateDocument = async (id: string, event: EventCreateRequest): Promise<void> => {
+export const updateEvent = async (id: string, event: EventCreateRequest): Promise<void> => {
     // Create a reference to a specific document in the 'users' collection
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
@@ -96,4 +96,13 @@ export const updateDocument = async (id: string, event: EventCreateRequest): Pro
         updatedAt: new Date(),
     });
     return;
+};
+
+
+export const deleteEvent = async (id: string): Promise<void> => {
+    // Create a reference to a specific document in the 'users' collection
+    const docRef: DocumentReference = db.collection("Events").doc(id);
+
+    // Use the `delete()` method to remove the document from Firestore
+    await docRef.delete();
 };
