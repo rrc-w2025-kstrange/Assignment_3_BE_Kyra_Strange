@@ -1,4 +1,4 @@
-import { Product } from "../models/productModel";
+import { Event } from "../models/eventModel";
 import * as firestoreRepository from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
 
