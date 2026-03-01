@@ -1,7 +1,7 @@
 import { initializeApp, cert, ServiceAccount } from "firebase-admin/app";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 
-import * as serviceAccount from "./coding-challenge-3-3f91f-firebase-adminsdk-fbsvc-82bdd33ffe.json";
+import * as serviceAccount from "./servicekey.json";
 
 // Initialize the Firebase app with the service account credentials
 initializeApp({
