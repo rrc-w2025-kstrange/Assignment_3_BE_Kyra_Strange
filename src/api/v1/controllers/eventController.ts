@@ -14,7 +14,7 @@ export const getAllEvents = (req: Request, res: Response) => {
     }
 }
 
-export const getProductById = (req: Request, res: Response) => {
+export const getEventById = (req: Request, res: Response) => {
     let result = getProductByIdService()
     res.status(200).json(result);
 };
@@ -25,11 +25,11 @@ export const createEvent = (req: Request, res: Response): void => {
   res.status(HTTP_STATUS.CREATED).send(result)
 };
 
-export const updateProduct = (req: Request, res: Response) => {
+export const updateEvent = (req: Request, res: Response) => {
     let result = updateProductService(12, "test")
     res.status(200).json(result);
 };
-export const deleteProduct = (req: Request, res: Response) => {
+export const deleteEvent = (req: Request, res: Response) => {
     let result = deleteProductService(65)
     res.status(200).json(result);
 };
