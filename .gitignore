@@ -1,5 +1,5 @@
 node_modules/
 dist/
 
-# Firebase service account
-/src/config/coding-challenge-3-3f91f-firebase-adminsdk-fbsvc-82bdd33ffe.json
+# Firebase service key
+servicekey.json
