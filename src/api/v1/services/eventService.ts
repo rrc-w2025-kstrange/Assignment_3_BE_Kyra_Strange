@@ -1,5 +1,5 @@
 import { Event } from "../models/eventModel";
-import { addEvent } from "../repositories/firestoreRepository";
+import { addEvent, getDocumentById } from "../repositories/firestoreRepository";
 import { validateRequest } from "../middleware/validateRequest";
 
 export const getAllEventsService = (): string[] => {
@@ -7,9 +7,20 @@ export const getAllEventsService = (): string[] => {
     return ["Item 1", "Item 2"];
 };
 
-export const getProductByIdService = (): string[] => {
+export const getEventByIdService = async (id: string): Promise<Event> => {
     // Logic to process all items from the database
-    return ["Item 1", "Item 2"];
+    let entity = await getDocumentById(id)
+    return {
+        id: entity?.id,
+        name: entity?.name,
+        date: entity?.date,
+        capacity: entity?.capacity,
+        registrationCount: entity?.registrationCount,
+        status: entity?.status,
+        category: entity?.category,
+        createdAt: entity?.createdAt,
+        updatedAt: entity?.updatedAt,
+    }
 };
 
 export const createNewEvent = (event: string): string => {

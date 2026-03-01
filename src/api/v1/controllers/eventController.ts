@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllEventsService, getProductByIdService, createNewEvent, updateProductService, deleteProductService } from "../services/eventService";
+import { getAllEventsService, getEventByIdService, createNewEvent, updateProductService, deleteProductService } from "../services/eventService";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { successResponse } from "../models/responseModel";
 
@@ -14,10 +14,16 @@ export const getAllEvents = (req: Request, res: Response) => {
     }
 }
 
-export const getEventById = (req: Request, res: Response) => {
-    let result = getProductByIdService()
-    res.status(200).json(result);
-};
+export const getEventById = async (req: Request, res: Response) => {
+    try {
+        let id = req.params.id;
+        let results = await getEventByIdService(id);
+
+        res.status(HTTP_STATUS.OK).json(successResponse(results, "Event retrieved"));
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"});
+    }
+}
 
 export const createEvent = (req: Request, res: Response): void => {
   let result = createNewEvent("new event")

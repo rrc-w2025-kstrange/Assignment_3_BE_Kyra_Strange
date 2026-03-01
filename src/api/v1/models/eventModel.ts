@@ -1,11 +1,11 @@
 export interface Event {
-    id: string;
-    name: string;
-    date: Date; 
-    capacity: number;
-    registrationCount: number;
-    status: string;
-    category: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id: string | undefined;
+    name: string | undefined;
+    date: Date | undefined; 
+    capacity: number | undefined;
+    registrationCount: number | undefined;
+    status: string | undefined;
+    category: string | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
