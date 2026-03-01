@@ -1,20 +1,30 @@
 import { db } from "../../../config/firebaseConfig";
-import { DocumentReference } from "firebase-admin/firestore";
+import { DocumentReference, QuerySnapshot } from "firebase-admin/firestore";
 import { Event } from "../models/eventModel";
+import { EventDTO } from "../models/eventDTO";
+import { EventCreateRequest } from "../models/eventCreateRequestModel";
 
-export const addEvent = async (): Promise<void> => {
-    // Create a reference to a document in the 'users' collection with ID 'user1'
-    // If the document doesn't exist, it will be created
-    const docRef: DocumentReference = db.collection("Events").doc();
 
-    // Use the `set` method to add or overwrite data in the document
-    // The data is passed as an object with fields and their values
-    await docRef.set({
-        id: "evt_000005",
-        name: "Tech Conference 2025",
+export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
+    const customId = `evt_${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+    
+    const docRef: DocumentReference = db.collection("Events").doc(customId);
+
+    const eventEntity: Event = {
+        id: customId,
+        name: event.name,
+        date: event.date, 
+        capacity: event.capacity,
+        registrationCount: event.registrationCount || 0, 
+        status: event.status || "active",
+        category: event.category || "general", 
         createdAt: new Date(),
-        });
-    console.log("Event added");
+        updatedAt: new Date(),
+    }
+
+    await docRef.set(eventEntity);
+
+    return eventEntity;
 };
 
 
@@ -44,4 +54,31 @@ export const getDocumentById = async (id: string): Promise<Event | undefined> =>
       } else {
         console.log("No such document!");
     }
+};
+
+export const getCollection = async (): Promise<Array<EventDTO> | undefined> => {
+    // Retrieve all documents from the 'users' collection
+    // `get()` returns a QuerySnapshot containing all documents in the collection
+    const snapshot: QuerySnapshot = await db.collection("Events").get();
+
+    const events: EventDTO[] = []
+
+    // Iterate through each document in the collection
+    snapshot.forEach((doc) => {
+
+        let data = doc.data();
+        events.push({
+          id: doc.id,
+          name: data!.name,
+          date: data!.date, 
+          capacity: data!.capacity,
+          registrationCount: data!.registrationCount,
+          status: data!.status,
+          category: data!.category,
+          createdAt: data!.createdAt,
+          updatedAt: data!.updatedAt,
+        })
+    });
+
+    return events;
 };
