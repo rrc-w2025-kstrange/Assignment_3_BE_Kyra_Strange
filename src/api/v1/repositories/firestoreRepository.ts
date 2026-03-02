@@ -50,14 +50,14 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
         return {
           id: doc.id,
           name: data!.name,
-          date: data!.date,
+          date: typeof data!.date.toDate === 'function' ? data!.date.toDate().toISOString() : data!.date,
           capacity: data!.capacity,
           registrationCount: data!.registrationCount,
           status: data!.status,
           category: data!.category,
-          createdAt: data!.createdAt,
-          updatedAt: data!.updatedAt,
-        }
+          createdAt: data!.createdAt.toDate().toISOString(),
+          updatedAt: data!.updatedAt.toDate().toISOString(),
+        } as Event;
       } else {
         console.log("No such document!");
     }
