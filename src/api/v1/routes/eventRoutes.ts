@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent} from '../controllers/eventController';
 import { validateRequest } from "../middleware/validateRequest";
-import { createProductSchema } from "../validation/productValidation";
+
 
 const router: Router = Router();
 
