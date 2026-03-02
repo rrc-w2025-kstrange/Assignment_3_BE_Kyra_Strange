@@ -4,7 +4,12 @@ import { Event } from "../models/eventModel";
 import { EventDTO } from "../models/eventDTO";
 import { EventCreateRequest } from "../models/eventCreateRequestModel";
 
-
+/**
+ * Adds a new event to Firestore using a transaction to generate a custom ID.
+ * The ID is based on a counter in the 'metadata' collection
+ * * @param event - The event details provided by the service.
+ * @returns A Promise that resolves to the fully created Event object.
+ */
 export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
     const counterRef = db.collection("metadata").doc("eventCounter");
     const eventsCollection = db.collection("Events");
@@ -35,7 +40,11 @@ export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
     });
 };
 
-
+/**
+ * Retrieves a single event document by its Firestore document ID.
+ * * @param id - The custom ID string 
+ * @returns The Event data if found, otherwise undefined.
+ */
 export const getEventById = async (id: string): Promise<Event | undefined> => {
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
@@ -63,6 +72,11 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
     }
 };
 
+/**
+ * Fetches all events from the 'Events' collection, ordered by creation date.
+ * Includes a safety helper to handle different date formats in the database.
+ * * @returns An array of Event Data Transfer Objects (DTOs).
+ */
 export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
     try {
         const snapshot: QuerySnapshot = await db.collection("Events").orderBy("createdAt", "asc").get();
@@ -98,6 +112,11 @@ export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
     }
 };
 
+/**
+ * Updates an event document with new data and sets a new 'updatedAt' timestamp.
+ * * @param id - The ID of the document to update.
+ * @param event - The new field values.
+ */
 export const updateEvent = async (id: string, event: EventCreateRequest): Promise<void> => {
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
@@ -110,7 +129,10 @@ export const updateEvent = async (id: string, event: EventCreateRequest): Promis
     return;
 };
 
-
+/**
+ * Deletes an event document permanently from the collection.
+ * * @param id - The ID of the document to delete.
+ */
 export const deleteEvent = async (id: string): Promise<void> => {
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
