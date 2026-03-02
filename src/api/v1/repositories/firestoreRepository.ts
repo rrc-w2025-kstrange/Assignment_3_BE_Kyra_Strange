@@ -64,33 +64,43 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
 };
 
 export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
-    const snapshot: QuerySnapshot = await db.collection("Events").orderBy("createdAt", "asc").get();
-    
-    const events: EventDTO[] = []
+    try {
+        const snapshot: QuerySnapshot = await db.collection("Events").orderBy("createdAt", "asc").get();
+        const events: EventDTO[] = [];
 
-    snapshot.forEach((doc) => {
-        let data = doc.data();
-        events.push({
-          id: doc.id,
-          name: data!.name,
-          date: data!.date.toDate().toISOString(), 
-          capacity: data!.capacity,
-          registrationCount: data!.registrationCount,
-          status: data!.status,
-          category: data!.category,
-          createdAt: data!.createdAt.toDate().toISOString(),
-          updatedAt: data!.updatedAt.toDate().toISOString(),
-        })
-    });
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            const formatSafeDate = (dateAny: any) => {
+                if (dateAny && typeof dateAny.toDate === 'function') {
+                    return dateAny.toDate().toISOString();
+                }
+                return new Date(dateAny).toISOString();
+            };
 
-    return events;
+            events.push({
+                id: doc.id,
+                name: data.name,
+                date: formatSafeDate(data.date), 
+                capacity: data.capacity,
+                registrationCount: data.registrationCount,
+                status: data.status,
+                category: data.category,
+                createdAt: formatSafeDate(data.createdAt),
+                updatedAt: formatSafeDate(data.updatedAt),
+            });
+        });
+
+        return events;
+    } catch (error) {
+        console.error("Repository Error in getAllEvents:", error);
+        return []; 
+    }
 };
 
 export const updateEvent = async (id: string, event: EventCreateRequest): Promise<void> => {
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
-    // Use the `update()` method to modify specific fields in the document
-    // This will only change the specified fields, leaving others untouched
     await docRef.update({
         name: event.name,
         date: event.date, 

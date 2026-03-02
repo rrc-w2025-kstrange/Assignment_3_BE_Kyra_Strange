@@ -48,20 +48,23 @@ export const createEvent = async (req: Request, res: Response): Promise<void> =>
     }
 };
 
-export const updateEvent = async (req: Request, res: Response) => {
-    try{
-        let id: string = req.params.id
-        let request: EventCreateRequest ={
-            name: req.body.name,
-            date: req.body.date, 
-            capacity: req.body.capacity,
+export const updateEvent = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const id: string = req.params.id;
+        const updateEvent = req.body;
+
+        await updateEventById(id, updateEvent);
+
+        const updatedResource = await getEventByIdService(id);
+
+        if (!updatedResource) {
+            return res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Event not found" });
         }
-        await updateEventById(id, request)
-        res.status(HTTP_STATUS.OK).send(`Entity ${id} was updated`);
-    }catch (error: any) {
-        res.status(HTTP_STATUS.NOT_FOUND).json({ 
-            message: "Event not found" 
-        });
+
+        return res.status(HTTP_STATUS.OK).json(updatedResource);
+        
+    } catch (error: any) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Event not found" });
     }
 };
 
