@@ -37,7 +37,6 @@ export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
 
 
 export const getEventById = async (id: string): Promise<Event | undefined> => {
-    // Create a reference to a specific document in the 'users' collection
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
     // Use the `get()` method to retrieve the document
@@ -88,7 +87,6 @@ export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
 };
 
 export const updateEvent = async (id: string, event: EventCreateRequest): Promise<void> => {
-    // Create a reference to a specific document in the 'users' collection
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
     // Use the `update()` method to modify specific fields in the document
@@ -104,7 +102,6 @@ export const updateEvent = async (id: string, event: EventCreateRequest): Promis
 
 
 export const deleteEvent = async (id: string): Promise<void> => {
-    // Create a reference to a specific document in the 'users' collection
     const docRef: DocumentReference = db.collection("Events").doc(id);
 
     // Use the `delete()` method to remove the document from Firestore
