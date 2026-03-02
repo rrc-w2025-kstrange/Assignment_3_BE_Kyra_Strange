@@ -1,19 +1,16 @@
 import express, { Express } from "express";
-import productRoutes from "./api/v1/routes/productRoutes";
+import eventRoutes from "./api/v1/routes/eventRoutes";
 
 // Initialize Express application
 const app: Express = express();
 
 app.use(express.json());
 
-// Route handler for items
-app.use("/api/v1", productRoutes);
+
+// Route handler
+app.use("/api/v1/events", eventRoutes);
 
 // Define a route
-app.get("/", (req, res) => {
-    res.send("Hello, World!");
-});
-
 app.get("/api/v1/health", (req, res) => {
     res.json({
         status: "OK",
