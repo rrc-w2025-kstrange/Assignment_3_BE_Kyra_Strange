@@ -10,9 +10,15 @@ export const getAllEvents = async (req: Request, res: Response) => {
     try {
         const events = await getAllEventsService();
 
-        res.status(HTTP_STATUS.OK).json(successResponse(events, "Events Retrieved"));
+        res.status(HTTP_STATUS.OK).json({
+            message: "Events retrieved",
+            count: events?.length || 0,
+            data: events
+        });
     } catch (error) {
-        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"});
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
+            message: "Internal Server Error" 
+        });
     }
 }
 
@@ -31,11 +37,14 @@ export const createEvent = async (req: Request, res: Response): Promise<void> =>
     try {
         const result = await createNewEvent(req.body as EventCreateRequest);
 
-        res.status(HTTP_STATUS.CREATED).json(
-            successResponse(result, "Event created")
-        );
-    } catch (error) {
-        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: "Failed to create event" });
+        res.status(HTTP_STATUS.CREATED).json({
+            message: "Event created", 
+            data: result            
+        });
+    } catch (error: any) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
+            message: "Failed to create event" 
+        });
     }
 };
 

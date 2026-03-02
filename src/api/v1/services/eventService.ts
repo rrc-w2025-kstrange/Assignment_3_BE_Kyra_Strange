@@ -1,6 +1,6 @@
 import { Event } from "../models/eventModel";
 import { addEvent, getEventById, getAllEvents, updateEvent, deleteEvent } from "../repositories/firestoreRepository";
-import { validateRequest } from "../middleware/validateRequest";
+import { validateRequest } from "../middleware/validate";
 import { EventCreateRequest } from "../models/eventCreateRequestModel";
 import { EventDTO } from "../models/eventDTO";
 

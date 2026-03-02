@@ -6,25 +6,33 @@ import { EventCreateRequest } from "../models/eventCreateRequestModel";
 
 
 export const addEvent = async (event: EventCreateRequest): Promise<Event> => {
-    const customId = `evt_${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+    const counterRef = db.collection("metadata").doc("eventCounter");
+    const eventsCollection = db.collection("Events");
     
-    const docRef: DocumentReference = db.collection("Events").doc(customId);
+    return await db.runTransaction(async (transaction) => {
+        const counterDoc = await transaction.get(counterRef);
+        const currentCount = counterDoc.exists ? counterDoc.data()?.count : 0;
+        const nextCount = currentCount + 1;
+        const customId = `evt_${nextCount.toString().padStart(6, '0')}`;
+        const docRef = eventsCollection.doc(customId);
 
-    const eventEntity: Event = {
-        id: customId,
-        name: event.name,
-        date: event.date, 
-        capacity: event.capacity,
-        registrationCount: event.registrationCount || 0, 
-        status: event.status || "active",
-        category: event.category || "general", 
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    }
+        const eventEntity: Event = {
+            id: customId,
+            name: event.name,
+            date: event.date,
+            capacity: event.capacity,
+            registrationCount: event.registrationCount || 0,
+            status: event.status || "active",
+            category: event.category || "general",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
 
-    await docRef.set(eventEntity);
+        transaction.set(docRef, eventEntity);
+        transaction.set(counterRef, { count: nextCount });
 
-    return eventEntity;
+        return eventEntity;
+    });
 };
 
 
@@ -57,10 +65,9 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
 };
 
 export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
-    // Retrieve all documents from the 'users' collection
     // `get()` returns a QuerySnapshot containing all documents in the collection
-    const snapshot: QuerySnapshot = await db.collection("Events").get();
-
+    const snapshot: QuerySnapshot = await db.collection("Events").orderBy("createdAt", "asc").get();
+    
     const events: EventDTO[] = []
 
     // Iterate through each document in the collection
