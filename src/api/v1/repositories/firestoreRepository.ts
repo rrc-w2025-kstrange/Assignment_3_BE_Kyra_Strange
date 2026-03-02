@@ -65,25 +65,22 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
 };
 
 export const getAllEvents = async (): Promise<Array<EventDTO> | undefined> => {
-    // `get()` returns a QuerySnapshot containing all documents in the collection
     const snapshot: QuerySnapshot = await db.collection("Events").orderBy("createdAt", "asc").get();
     
     const events: EventDTO[] = []
 
-    // Iterate through each document in the collection
     snapshot.forEach((doc) => {
-
         let data = doc.data();
         events.push({
           id: doc.id,
           name: data!.name,
-          date: data!.date, 
+          date: data!.date.toDate().toISOString(), 
           capacity: data!.capacity,
           registrationCount: data!.registrationCount,
           status: data!.status,
           category: data!.category,
-          createdAt: data!.createdAt,
-          updatedAt: data!.updatedAt,
+          createdAt: data!.createdAt.toDate().toISOString(),
+          updatedAt: data!.updatedAt.toDate().toISOString(),
         })
     });
 
