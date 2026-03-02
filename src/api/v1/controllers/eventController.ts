@@ -29,7 +29,7 @@ export const getEventById = async (req: Request, res: Response) => {
 
         res.status(HTTP_STATUS.OK).json(successResponse(results, "Event retrieved"));
     } catch (error) {
-        res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Internal Server Error"});
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Event not found"});
     }
 }
 
@@ -49,18 +49,31 @@ export const createEvent = async (req: Request, res: Response): Promise<void> =>
 };
 
 export const updateEvent = async (req: Request, res: Response) => {
-    let id: string = req.params.id
-    let request: EventCreateRequest ={
-        name: req.body.name,
-        date: req.body.date, 
-        capacity: req.body.capacity,
+    try{
+        let id: string = req.params.id
+        let request: EventCreateRequest ={
+            name: req.body.name,
+            date: req.body.date, 
+            capacity: req.body.capacity,
+        }
+        await updateEventById(id, request)
+        res.status(HTTP_STATUS.OK).send(`Entity ${id} was updated`);
+    }catch (error: any) {
+        res.status(HTTP_STATUS.NOT_FOUND).json({ 
+            message: "Event not found" 
+        });
     }
-    await updateEventById(id, request)
-    res.status(HTTP_STATUS.OK).send(`Entity ${id} was updated`);
 };
 
 export const deleteEvent = async (req: Request, res: Response) => {
-    let id: string =  req.params.id
-    let result = await deleteEventById(id)
-    res.status(HTTP_STATUS.OK).send(`Entity ${id} was deleted`);
+    try {
+        let id: string = req.params.id;
+        await deleteEventById(id); 
+        
+        res.status(HTTP_STATUS.OK).json({ message: `Entity ${id} was deleted` });
+    } catch (error: any) {
+        res.status(HTTP_STATUS.NOT_FOUND).json({ 
+            message: "Event not found" 
+        });
+    }
 };

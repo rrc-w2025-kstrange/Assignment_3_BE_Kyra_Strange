@@ -36,6 +36,11 @@ export const updateEventById = async (id: string, event: EventCreateRequest): Pr
 };
 
 export const deleteEventById = async (id: string): Promise<void> => {
-    // Logic to delete an item from the database
+    const existing = await getEventById(id);
+    
+    if (!existing) {
+        throw new Error("Not Found");
+    }
+
     await deleteEvent(id);
 };
