@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllEventsService, getEventByIdService, createNewEvent, updateEventById, deleteProductService } from "../services/eventService";
+import { getAllEventsService, getEventByIdService, createNewEvent, updateEventById, deleteEventById } from "../services/eventService";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
 import { successResponse } from "../models/responseModel";
 import { EventCreateRequest } from "../models/eventCreateRequestModel";
@@ -47,10 +47,11 @@ export const updateEvent = async (req: Request, res: Response) => {
         capacity: req.body.capacity,
     }
     await updateEventById(id, request)
-    res.status(HTTP_STATUS.CREATED).send(`Entity ${id} was updated`);
+    res.status(HTTP_STATUS.OK).send(`Entity ${id} was updated`);
 };
 
-export const deleteEvent = (req: Request, res: Response) => {
-    let result = deleteProductService(65)
-    res.status(200).json(result);
+export const deleteEvent = async (req: Request, res: Response) => {
+    let id: string =  req.params.id
+    let result = await deleteEventById(id)
+    res.status(HTTP_STATUS.OK).send(`Entity ${id} was deleted`);
 };

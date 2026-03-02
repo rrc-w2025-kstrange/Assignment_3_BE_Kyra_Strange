@@ -35,7 +35,7 @@ export const updateEventById = async (id: string, event: EventCreateRequest): Pr
     return;
 };
 
-export const deleteProductService = (id: number): string => {
+export const deleteEventById = async (id: string): Promise<void> => {
     // Logic to delete an item from the database
-    return "Item deleted";
+    await deleteEvent(id);
 };
